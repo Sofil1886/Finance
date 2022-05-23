@@ -1,0 +1,23 @@
+import pandas as pd
+import edgar
+edgar.download_index(r"C:\Users\Ivan\Desktop",2018,"ivan.sofilkanich.99@gmail.com",skip_all_present_except_last=False)
+!pip install python-edgar
+
+selectedcompany = "ELECTRONIC ARTS INC"
+selectedreport='10-Q'
+csv = pd.read_csv(r'/content/C:\Users\Ivan\Desktop/2019-QTR4.tsv', sep = '\t', lineterminator='\n', names=None)
+
+csv.columns.values[0] = 'Item'
+companyreport = csv[(csv['Item'].str.contains(selectedcompany)) & (csv['Item'].str.contains(selectedreport))]
+
+Filing = companyreport['Item'].str.split('|')
+Filing = Filing.to_list()
+Filing
+
+for item in Filing[0]:
+  if 'html'in item:
+    report = item
+url = 'https://www.sec.gov/Archives/'+ report
+url
+
+df = pd.read_html(url)
